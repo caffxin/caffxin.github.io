@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef, FormEvent } from 'react';
-import { Menu, X, Mail, ExternalLink, ChevronRight, Code, Cpu, Database, Globe, MessageSquare, Copy } from 'lucide-react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import emailjs from '@emailjs/browser';
-import toast, { Toaster } from 'react-hot-toast';
-import { EMAILJS_CONFIG } from './emailjs-config';
-import { Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
+import { Code, Globe, Database, Cpu } from 'lucide-react';
+import { Routes, Route, Link } from 'react-router-dom';
 import PortfolioPage from './pages/PortfolioPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,58 +13,12 @@ import ProcessPage from './pages/ProcessPage';
 import FAQPage from './pages/FAQPage';
 import ContactPage from './pages/ContactPage';
 import ScrollToTop from './components/ScrollToTop';
+import { motion as motionLink } from 'framer-motion';
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.05], [1, 0.95]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
-  
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success('已複製到剪貼板！');
-    } catch (err) {
-      toast.error('複製失敗，請手動複製。');
-    }
-  };
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    
-    if (!formRef.current) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      const result = await emailjs.sendForm(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
-        formRef.current,
-        EMAILJS_CONFIG.publicKey
-      );
-      
-      console.log('Email successfully sent!', result.text);
-      toast.success('訊息已成功發送！我們將盡快回覆您。');
-      formRef.current.reset();
-    } catch (error) {
-      console.error('Failed to send email:', error);
-      toast.error('發送失敗，請稍後再試。');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   // 浮動粒子背景
   const particles = Array.from({ length: 20 }).map((_, i) => (
@@ -161,8 +113,7 @@ function App() {
     }
   };
 
-  // 定義主色
-  const MAIN_COLOR = '#0D1E4C';
+  const MotionLink = motion(Link);
 
   const HomePage = () => (
     <div className="min-h-screen bg-white text-gray-800 overflow-hidden relative">
@@ -263,37 +214,38 @@ function App() {
               initial="hidden"
               animate="visible"
             >
-              <motion.a 
-                href="/contact" 
+              <MotionLink
+                to="/contact"
                 className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-900 transition-colors shadow-md relative overflow-hidden group"
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="relative z-10">開始合作</span>
-                <motion.span 
+                <span className="relative z-10">立即諮詢</span>
+                <motion.span
                   className="absolute inset-0 bg-primary-900 rounded-lg"
                   initial={{ x: '-100%' }}
                   whileHover={{ x: 0 }}
                   transition={{ duration: 0.3 }}
+                  style={{ zIndex: 1 }}
                 />
-              </motion.a>
-              
-              <motion.a 
-                href="#projects" 
+              </MotionLink>
+              <MotionLink
+                to="/portfolio"
                 className="px-6 py-3 border border-primary-800 text-primary-800 rounded-lg hover:bg-secondary-200 transition-colors relative overflow-hidden group"
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <span className="relative z-10">探索案例</span>
-                <motion.span 
+                <motion.span
                   className="absolute inset-0 bg-secondary-200 rounded-lg"
                   initial={{ y: '100%' }}
                   whileHover={{ y: 0 }}
                   transition={{ duration: 0.3 }}
+                  style={{ zIndex: 1 }}
                 />
-              </motion.a>
+              </MotionLink>
             </motion.div>
           </motion.div>
           
@@ -476,31 +428,17 @@ function App() {
                   { "title": "後台管理系統開發", "desc": "整合數據與權限，簡化管理流程。" },
                   { "title": "流程自動化", "desc": "AI 助理結合自動化工具，提升效率，節省時間與人力成本。"},
                   { "title": "UI/UX 設計", "desc": "直覺操作與美觀設計，提升使用體驗與轉換率。" },
-                  { "title": "了解更多服務項目", "desc": "", "link": "/services", "icon": true }
+                  { "title": "技術外包服務", "desc": "提供專業技術外包，長短期合作皆可洽詢。" }
                 ].map((service, index) => (
-                  service.link ? (
-                    <a href={service.link} key={index} style={{ textDecoration: 'none' }}>
-                      <motion.div
-                        className="p-6 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-between"
-                        style={{ background: 'rgb(245, 230, 237)' }}
-                        variants={itemVariants}
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <h4 className="text-lg font-semibold" style={{ color: MAIN_COLOR }}>{service.title}</h4>
-                        <ChevronRight size={32} style={{ color: MAIN_COLOR }} className="ml-4" />
-                      </motion.div>
-                    </a>
-                  ) : (
-                    <motion.div
-                      key={index}
-                      className="p-6 bg-[#83A6CE] bg-opacity-10 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300"
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <h4 className="text-lg font-semibold text-primary-800">{service.title}</h4>
-                      <p className="text-gray-700 mt-2">{service.desc}</p>
-                    </motion.div>
-                  )
+                  <motion.div
+                    key={index}
+                    className="p-6 bg-[#83A6CE] bg-opacity-10 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300"
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <h4 className="text-lg font-semibold text-primary-800">{service.title}</h4>
+                    <p className="text-gray-700 mt-2">{service.desc}</p>
+                  </motion.div>
                 ))}
               </motion.div>
             </motion.div>
@@ -586,9 +524,7 @@ function App() {
             ))}
           </div>
           <div className="flex justify-center mt-12">
-            <a href="/about" className="px-8 py-3 rounded-full font-bold text-lg transition shadow-md" style={{ letterSpacing: 2, background: 'rgb(245, 230, 237)', color: MAIN_COLOR }}>
-              認識我們的團隊
-            </a>
+            {/* 認識我們的團隊按鈕已移除 */}
           </div>
         </div>
       </section>
@@ -721,14 +657,13 @@ function App() {
           </motion.div>
           {/* 新增更多作品按鈕 */}
           <div className="flex justify-center mt-8">
-            <motion.button
-              className="px-8 py-3 bg-primary-800 text-white rounded-lg shadow-md hover:bg-primary-900 transition-colors text-lg font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => window.location.href = '/portfolio'}
+            <Link
+              to="/portfolio"
+              className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-900 transition-colors shadow-md relative overflow-hidden group"
             >
-              更多作品
-            </motion.button>
+              <span className="relative z-10">更多作品</span>
+              <span className="absolute inset-0 bg-primary-900 rounded-lg group-hover:left-0 transition-all duration-300" style={{ left: '-100%' }} />
+            </Link>
           </div>
         </div>
       </section>

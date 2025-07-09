@@ -7,7 +7,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/', // 這裡要改成你的 GitHub Repo 名稱
+  base: '/',
   build: {
     outDir: 'dist'
   },

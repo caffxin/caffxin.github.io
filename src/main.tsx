@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 
@@ -11,10 +11,15 @@ favicon.type = "image/svg+xml";
 favicon.href = `${import.meta.env.BASE_URL}caffxin_tech.svg`;
 document.head.appendChild(favicon);
 
+// LINE 內建瀏覽器有時會自動加 #/s，這裡自動導回首頁
+if (window.location.hash === '#/s') {
+  window.location.hash = '#/';
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/">
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 );

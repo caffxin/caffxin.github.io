@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0; url=/" />
+    <script>
+      // 將路徑保留給前端路由
+      var path = window.location.pathname + window.location.search + window.location.hash;
+      window.location.replace('/' + (path === '/' ? '' : '#' + path));
+    </script>
+  </head>
+  <body>
+    <h1>Redirecting...</h1>
+  </body>
+</html> 

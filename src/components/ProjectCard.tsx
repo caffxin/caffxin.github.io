@@ -13,7 +13,6 @@ export interface Project {
 }
 
 const DEFAULT_IMAGE = '/images/enterprise-admin-system.jpg';
-const MAIN_COLOR = '#0D1E4C';
 
 const ProjectCard: React.FC<Project> = ({
   projectName,

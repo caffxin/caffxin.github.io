@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Handshake, Lightbulb, Brain, Sparkles, Code2 } from 'lucide-react';
+import { Users, Handshake, Lightbulb, Brain, Sparkles } from 'lucide-react';
 
 const MAIN_COLOR = 'rgb(38, 65, 94)';
 const BG_COLOR = 'rgb(242, 246, 250)';

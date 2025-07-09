@@ -148,11 +148,6 @@ const ProcessPage: React.FC = () => (
               <div className="text-center text-base" style={{ color: '#26415E' }}>持續協助客戶成長，問題即時回應</div>
             </div>
           </div>
-          <div className="flex justify-center mt-8">
-            <a href="/contact" className="px-8 py-3 rounded-full text-white font-bold text-lg transition bg-[#0D1E4C] hover:bg-[#26415E] shadow-md" style={{ letterSpacing: 2 }}>
-              立即諮詢
-            </a>
-          </div>
         </section>
       </section>
     </motion.div>

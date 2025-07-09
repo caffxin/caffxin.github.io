@@ -27,7 +27,7 @@ const ContactPage: React.FC = () => {
     if (!formRef.current) return;
     setIsSubmitting(true);
     try {
-      const result = await emailjs.sendForm(
+      await emailjs.sendForm(
         EMAILJS_CONFIG.serviceId,
         EMAILJS_CONFIG.templateId,
         formRef.current,
